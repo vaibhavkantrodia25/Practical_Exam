@@ -40,4 +40,5 @@ jobs:
         script: |
           cd /home/ubuntu/app
           sudo /usr/bin/npm install
-          /usr/bin/pm2 restart 0
+          /usr/bin/pm2 stop all
+          /usr/bin/pm2 dist/min.js
