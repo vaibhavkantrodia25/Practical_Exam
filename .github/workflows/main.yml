@@ -3,11 +3,11 @@ name: Deploy to EC2
 on:
   push:
     branches:
-      - development
+      - main
 jobs:
   build-development:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/development'
+    if: github.ref == 'refs/heads/main'
 
     steps:
     - name: Checkout code
@@ -39,5 +39,5 @@ jobs:
         script: |
           cd /home/ubuntu/app
           sudo /usr/bin/npm install
-          /usr/bin/pm2 restart employer-server
+          /usr/bin/pm2 restart 0
       continue-on-error: true
