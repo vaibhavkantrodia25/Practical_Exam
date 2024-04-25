@@ -3,14 +3,13 @@ name: Deploy to EC2
 on:
   push:
     branches:
-      - main
+      - development
+
 jobs:
   build-development:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
-    strategy:
-      matrix:
-        node-version: [18.x]
+    if: github.ref == 'refs/heads/development'
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
@@ -19,7 +18,7 @@ jobs:
       run: npm install
 
     - name: Build app
-      run: npm run build
+      run: npm run build:dev
 
     - name: Transfer files to EC2
       uses: appleboy/scp-action@master
@@ -28,7 +27,8 @@ jobs:
         username: ${{ secrets.EC2_USERNAME_DEV }}
         key: ${{ secrets.EC2_PRIVATE_KEY_DEV }}
         source: './*,!./node_modules/*'
-        target: '/home/ubuntu/app-api/'
+        target: '/home/ubuntu/app/'
+      continue-on-error: true
 
     - name: Install package and restart app
       uses: appleboy/ssh-action@v0.1.6
@@ -40,4 +40,5 @@ jobs:
         script: |
           cd /home/ubuntu/app
           sudo /usr/bin/npm install
-          /usr/bin/pm2 0
+          /usr/bin/pm2 restart employer-server
+      continue-on-error: true
