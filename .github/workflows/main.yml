@@ -28,7 +28,7 @@ jobs:
         username: ${{ secrets.EC2_USERNAME_DEV }}
         key: ${{ secrets.EC2_PRIVATE_KEY_DEV }}
         source: './*,!./node_modules/*'
-        target: '/home/ubuntu/Practical_Exam/'
+        target: '/home/ubuntu/app/'
 
     - name: Install package and restart app
       uses: appleboy/ssh-action@v0.1.6
@@ -38,6 +38,6 @@ jobs:
         key: ${{ secrets.EC2_PRIVATE_KEY_DEV }}
         port: 22
         script: |
-          cd /home/ubuntu/Practical_Exam
-          npm install
+          cd /home/ubuntu/app
+          sudo /usr/bin/npm install
           /usr/bin/pm2 restart 0
