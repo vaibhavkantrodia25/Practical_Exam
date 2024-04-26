@@ -38,6 +38,6 @@ jobs:
         key: ${{ secrets.EC2_PRIVATE_KEY_DEV }}
         port: 22
         script: |
-          cd /home/ubuntu/app
-          sudo /usr/bin/npm install
-          /usr/bin/pm2 restart 0
+              cd /home/ubuntu/app || { echo "Failed to change directory"; exit 1; }
+              /usr/bin/npm install || { echo "npm install failed"; exit 1; }
+              /usr/local/bin/pm2 restart 0 || { echo "pm2 restart failed"; exit 1; }
